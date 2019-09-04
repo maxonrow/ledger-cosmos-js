@@ -1,4 +1,4 @@
-import CosmosApp from 'index.js';
+import MxwApp from 'index.js';
 import TransportNodeHid from '@ledgerhq/hw-transport-node-hid';
 import secp256k1 from 'secp256k1/elliptic';
 import crypto from 'crypto';
@@ -6,7 +6,7 @@ import crypto from 'crypto';
 test('get version', async () => {
     const transport = await TransportNodeHid.create(1000);
 
-    const app = new CosmosApp(transport);
+    const app = new MxwApp(transport);
     const resp = await app.getVersion();
     console.log(resp);
 
@@ -21,10 +21,10 @@ test('get version', async () => {
 
 test('publicKey', async () => {
     const transport = await TransportNodeHid.create(1000);
-    const app = new CosmosApp(transport);
+    const app = new MxwApp(transport);
 
     // Derivation path. First 3 items are automatically hardened!
-    const path = [44, 118, 0, 0, 0];
+    const path = [44, 376, 0, 0, 0];
     const resp = await app.publicKey(path);
 
     console.log(resp);
@@ -46,11 +46,11 @@ test('getAddressAndPubKey', async () => {
     jest.setTimeout(60000);
 
     const transport = await TransportNodeHid.create(1000);
-    const app = new CosmosApp(transport);
+    const app = new MxwApp(transport);
 
     // Derivation path. First 3 items are automatically hardened!
-    const path = [44, 118, 5, 0, 3];
-    const resp = await app.getAddressAndPubKey(path, 'cosmos');
+    const path = [44, 376, 5, 0, 3];
+    const resp = await app.getAddressAndPubKey(path, 'mxw');
 
     console.log(resp);
 
@@ -60,13 +60,13 @@ test('getAddressAndPubKey', async () => {
     expect(resp).toHaveProperty('bech32_address');
     expect(resp).toHaveProperty('compressed_pk');
 
-    expect(resp.bech32_address).toEqual('cosmos1wkd9tfm5pqvhhaxq77wv9tvjcsazuaykwsld65');
+    expect(resp.bech32_address).toEqual('mxw1wkd9tfm5pqvhhaxq77wv9tvjcsazuaykwsld65');
     expect(resp.compressed_pk.length).toEqual(33);
 });
 
 test('appInfo', async () => {
     const transport = await TransportNodeHid.create(1000);
-    const app = new CosmosApp(transport);
+    const app = new MxwApp(transport);
 
     const resp = await app.appInfo();
 
@@ -87,7 +87,7 @@ test('appInfo', async () => {
 
 test('deviceInfo', async () => {
     const transport = await TransportNodeHid.create(1000);
-    const app = new CosmosApp(transport);
+    const app = new MxwApp(transport);
 
     const resp = await app.deviceInfo();
 
@@ -106,11 +106,11 @@ test('sign_and_verify', async () => {
     jest.setTimeout(60000);
 
     const transport = await TransportNodeHid.create(1000);
-    const app = new CosmosApp(transport);
+    const app = new MxwApp(transport);
 
     // Derivation path. First 3 items are automatically hardened!
-    const path = [44, 118, 0, 0, 0];
-    const message = '{"account_number":"6571","chain_id":"cosmoshub-2","fee":{"amount":[{"amount":"5000","denom":"uatom"}],"gas":"200000"},"memo":"Delegated with Ledger from union.market","msgs":[{"type":"cosmos-sdk/MsgDelegate","value":{"amount":{"amount":"1000000","denom":"uatom"},"delegator_address":"cosmos102hty0jv2s29lyc4u0tv97z9v298e24t3vwtpl","validator_address":"cosmosvaloper1grgelyng2v6v3t8z87wu3sxgt9m5s03xfytvz7"}}],"sequence":"0"}';
+    const path = [44, 376, 0, 0, 0];
+    const message = '{"account_number":"163769","chain_id":"alloys","fee":{"amount":[{"amount":"10000000000000000","denom":"cin"}],"gas":"0"},"memo":"this is a memo","msgs":[{"type":"mxw/msgSend","value":{"amount":[{"amount":"10","denom":"cin"}],"from_address":"mxw13g0pzwfs8lz34ccyya73favc6vqkgqfu0l9ymf","to_address":"mxw1awqypf50w23rkqqpdn67fv6hfvtd87vwdxnqk7"}}],"sequence":"0"}';
 
     const responsePk = await app.publicKey(path);
     const responseSign = await app.sign(path, message);
@@ -137,9 +137,9 @@ test('sign_big_tx', async () => {
     jest.setTimeout(60000);
 
     const transport = await TransportNodeHid.create(1000);
-    const app = new CosmosApp(transport);
+    const app = new MxwApp(transport);
 
-    const path = [44, 118, 0, 0, 0]; // Derivation path. First 3 items are automatically hardened!
+    const path = [44, 376, 0, 0, 0]; // Derivation path. First 3 items are automatically hardened!
     const message = '{"account_number":"108","chain_id":"cosmoshub-2",'
         + '"fee":{"amount":[{"amount":"600","denom":"uatom"}],"gas":"200000"},"memo":"",'
         + '"msgs":[{"type":"cosmos-sdk/MsgWithdrawDelegationReward","value":'
@@ -193,9 +193,9 @@ test('sign_invalid', async () => {
     jest.setTimeout(60000);
 
     const transport = await TransportNodeHid.create(1000);
-    const app = new CosmosApp(transport);
+    const app = new MxwApp(transport);
 
-    const path = [44, 118, 0, 0, 0]; // Derivation path. First 3 items are automatically hardened!
+    const path = [44, 376, 0, 0, 0]; // Derivation path. First 3 items are automatically hardened!
     const invalidMessage = '{"chain_id":"local-testnet","fee":{"amount":[],"gas":"500000"},"memo":"","msgs":[{"delegator_addr":"cosmos1qpd4xgtqmxyf9ktjh757nkdfnzpnkamny3cpzv","validator_addr":"cosmosvaloper1zyp0axz2t55lxkmgrvg4vpey2rf4ratcsud07t","value":{"amount":"1","denom":"stake"}}],"sequence":"0"}';
 
     const responseSign = await app.sign(path, invalidMessage);

@@ -123,7 +123,7 @@ export default {
             const app = new CosmosApp(transport);
 
             // now it is possible to access all commands in the app
-            const path = [44, 118, 5, 0, 3];
+            const path = [44, 376, 5, 0, 3];
             const response = await app.getAddressAndPubKey(path, 'cosmos');
             if (response.return_code !== 0x9000) {
                 this.log(`Error [${response.return_code}] ${response.error_message}`);
@@ -145,7 +145,7 @@ export default {
             const app = new CosmosApp(transport);
 
             // now it is possible to access all commands in the app
-            const path = [44, 118, 0, 0, 0];
+            const path = [44, 376, 0, 0, 0];
             const message = '{"account_number":"6571","chain_id":"cosmoshub-2","fee":{"amount":[{"amount":"5000","denom":"uatom"}],"gas":"200000"},"memo":"Delegated with Ledger from union.market","msgs":[{"type":"cosmos-sdk/MsgDelegate","value":{"amount":{"amount":"1000000","denom":"uatom"},"delegator_address":"cosmos102hty0jv2s29lyc4u0tv97z9v298e24t3vwtpl","validator_address":"cosmosvaloper1grgelyng2v6v3t8z87wu3sxgt9m5s03xfytvz7"}}],"sequence":"0"}';
             const response = await app.sign(path, message);
 
