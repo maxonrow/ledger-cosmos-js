@@ -41,7 +41,7 @@ export default class MxwApp {
     this.transport = transport;
     transport.decorateAppAPIMethods(
       this,
-      ["getVersion", "sign", "getAddressAndPubKey", "appInfo", "deviceInfo", "getBech32FromPK"],
+      ["getVersion", "sign", "getAddressAndPubKey", "showAddressAndPubKey", "appInfo", "deviceInfo", "getBech32FromPK"],
       scrambleKey,
     );
   }
