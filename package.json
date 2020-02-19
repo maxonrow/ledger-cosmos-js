@@ -1,6 +1,6 @@
 {
   "name": "ledger-mxw-js",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Node API for MXW App (Ledger Nano S/X)",
   "main": "./dist/index.js",
   "repository": {
@@ -11,7 +11,7 @@
     "Ledger",
     "Javascript",
     "Tendermint",
-    "Cosmos"
+    "MXW"
   ],
   "author": "william khoo",
   "license": "Apache-2.0",
@@ -44,7 +44,7 @@
     "bip39": "3.0.2",
     "core-js": "^3.3.4",
     "crypto-js": "3.1.9-1",
-    "eslint": "^6.6.0",
+    "eslint": "^5.0.0",
     "eslint-config-airbnb-base": "^14.0.0",
     "eslint-config-prettier": "^6.5.0",
     "eslint-plugin-import": "^2.18.2",
