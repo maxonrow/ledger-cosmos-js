@@ -12,6 +12,10 @@
       Get Version
     </button>
 
+    <button @click="appInfo">
+      AppInfo
+    </button>
+
     <button @click="getPublicKey">
       Get pubkey only
     </button>
@@ -40,26 +44,26 @@
 
 <script>
 // eslint-disable-next-line import/no-extraneous-dependencies
-import TransportWebUSB from "@ledgerhq/hw-transport-webusb";
+import TransportWebUSB from '@ledgerhq/hw-transport-webusb'
 // eslint-disable-next-line import/no-extraneous-dependencies
-import TransportU2F from "@ledgerhq/hw-transport-u2f";
-import MxwApp from "../../src";
-import { ERROR_CODE } from "../../src/common";
+import TransportU2F from '@ledgerhq/hw-transport-u2f'
+import MxwApp from '../../src'
+import { ERROR_CODE } from '../../src/common'
 
-const path = [44, 376, 0, 0, 0];
+const path = [44, 376, 0, 0, 0]
 
 export default {
-  name: "CosmosLedger",
+  name: 'CosmosLedger',
   props: {},
   data() {
     return {
       deviceLog: [],
-      transportChoice: "WebUSB",
-    };
+      transportChoice: 'WebUSB',
+    }
   },
   computed: {
     ledgerStatus() {
-      return this.deviceLog;
+      return this.deviceLog
     },
   },
   methods: {
@@ -67,144 +71,161 @@ export default {
       this.deviceLog.push({
         index: this.deviceLog.length,
         msg,
-      });
+      })
     },
     async getTransport() {
-      let transport = null;
+      let transport = null
 
-      this.log(`Trying to connect via ${this.transportChoice}...`);
-      if (this.transportChoice === "WebUSB") {
+      this.log(`Trying to connect via ${this.transportChoice}...`)
+      if (this.transportChoice === 'WebUSB') {
         try {
-          transport = await TransportWebUSB.create();
+          transport = await TransportWebUSB.create()
         } catch (e) {
-          this.log(e);
+          this.log(e)
         }
       }
 
-      if (this.transportChoice === "U2F") {
+      if (this.transportChoice === 'U2F') {
         try {
-          transport = await TransportU2F.create(10000);
+          transport = await TransportU2F.create(10000)
         } catch (e) {
-          this.log(e);
+          this.log(e)
         }
       }
 
-      return transport;
+      return transport
     },
     async getVersion() {
-      this.deviceLog = [];
+      this.deviceLog = []
 
       // Given a transport (U2F/HIF/WebUSB) it is possible instantiate the app
-      const transport = await this.getTransport();
-      const app = new MxwApp(transport);
+      const transport = await this.getTransport()
+      const app = new MxwApp(transport)
 
       // now it is possible to access all commands in the app
-      const response = await app.getVersion();
+      const response = await app.getVersion()
       if (response.return_code !== ERROR_CODE.NoError) {
-        this.log(`Error [${response.return_code}] ${response.error_message}`);
-        return;
+        this.log(`Error [${response.return_code}] ${response.error_message}`)
+        return
       }
 
-      this.log("Response received!");
-      this.log(`App Version ${response.major}.${response.minor}.${response.patch}`);
-      this.log(`Device Locked: ${response.device_locked}`);
-      this.log(`Test mode: ${response.test_mode}`);
-      this.log("Full response:");
-      this.log(response);
+      this.log('Response received!')
+      this.log(`App Version ${response.major}.${response.minor}.${response.patch}`)
+      this.log(`Device Locked: ${response.device_locked}`)
+      this.log(`Test mode: ${response.test_mode}`)
+      this.log('Full response:')
+      this.log(response)
+    },
+    async appInfo() {
+      this.deviceLog = []
+
+      // Given a transport (U2F/HIF/WebUSB) it is possible instantiate the app
+      const transport = await this.getTransport()
+      const app = new CosmosApp(transport)
+
+      // now it is possible to access all commands in the app
+      const response = await app.appInfo()
+      if (response.return_code !== 0x9000) {
+        this.log(`Error [${response.return_code}] ${response.error_message}`)
+        return
+      }
+
+      this.log('Response received!')
+      this.log(response)
     },
     async getPublicKey() {
-      this.deviceLog = [];
+      this.deviceLog = []
 
       // Given a transport (U2F/HIF/WebUSB) it is possible instantiate the app
-      const transport = await this.getTransport();
-      const app = new MxwApp(transport);
+      const transport = await this.getTransport()
+      const app = new MxwApp(transport)
 
-      let response = await app.getVersion();
-      this.log(`App Version ${response.major}.${response.minor}.${response.patch}`);
-      this.log(`Device Locked: ${response.device_locked}`);
-      this.log(`Test mode: ${response.test_mode}`);
+      let response = await app.getVersion()
+      this.log(`App Version ${response.major}.${response.minor}.${response.patch}`)
+      this.log(`Device Locked: ${response.device_locked}`)
+      this.log(`Test mode: ${response.test_mode}`)
 
       // now it is possible to access all commands in the app
-      response = await app.publicKey(path);
+      response = await app.publicKey(path)
       if (response.return_code !== 0x9000) {
-        this.log(`Error [${response.return_code}] ${response.error_message}`);
-        return;
+        this.log(`Error [${response.return_code}] ${response.error_message}`)
+        return
       }
 
-      this.log("Response received!");
-      this.log("Full response:");
-      this.log(response);
+      this.log('Response received!')
+      this.log('Full response:')
+      this.log(response)
     },
     async getAddress() {
-      this.deviceLog = [];
+      this.deviceLog = []
 
       // Given a transport (U2F/HIF/WebUSB) it is possible instantiate the app
-      const transport = await this.getTransport();
-      const app = new MxwApp(transport);
+      const transport = await this.getTransport()
+      const app = new MxwApp(transport)
 
-      let response = await app.getVersion();
-      this.log(`App Version ${response.major}.${response.minor}.${response.patch}`);
-      this.log(`Device Locked: ${response.device_locked}`);
-      this.log(`Test mode: ${response.test_mode}`);
+      let response = await app.getVersion()
+      this.log(`App Version ${response.major}.${response.minor}.${response.patch}`)
+      this.log(`Device Locked: ${response.device_locked}`)
+      this.log(`Test mode: ${response.test_mode}`)
 
       // now it is possible to access all commands in the app
-      response = await app.getAddressAndPubKey(path, "mxw");
+      response = await app.getAddressAndPubKey(path, 'mxw')
       if (response.return_code !== 0x9000) {
-        this.log(`Error [${response.return_code}] ${response.error_message}`);
-        return;
+        this.log(`Error [${response.return_code}] ${response.error_message}`)
+        return
       }
 
-      this.log("Response received!");
-      this.log("Full response:");
-      this.log(response);
+      this.log('Response received!')
+      this.log('Full response:')
+      this.log(response)
     },
     async showAddress() {
-      this.deviceLog = [];
+      this.deviceLog = []
 
       // Given a transport (U2F/HIF/WebUSB) it is possible instantiate the app
-      const transport = await this.getTransport();
-      const app = new MxwApp(transport);
+      const transport = await this.getTransport()
+      const app = new MxwApp(transport)
 
-      let response = await app.getVersion();
-      this.log(`App Version ${response.major}.${response.minor}.${response.patch}`);
-      this.log(`Device Locked: ${response.device_locked}`);
-      this.log(`Test mode: ${response.test_mode}`);
+      let response = await app.getVersion()
+      this.log(`App Version ${response.major}.${response.minor}.${response.patch}`)
+      this.log(`Device Locked: ${response.device_locked}`)
+      this.log(`Test mode: ${response.test_mode}`)
 
       // now it is possible to access all commands in the app
-      this.log("Please click in the device");
-      response = await app.showAddressAndPubKey(path, "mxw");
+      this.log('Please click in the device')
+      response = await app.showAddressAndPubKey(path, 'mxw')
       if (response.return_code !== ERROR_CODE.NoError) {
-        this.log(`Error [${response.return_code}] ${response.error_message}`);
-        return;
+        this.log(`Error [${response.return_code}] ${response.error_message}`)
+        return
       }
 
-      this.log("Response received!");
-      this.log("Full response:");
-      this.log(response);
+      this.log('Response received!')
+      this.log('Full response:')
+      this.log(response)
     },
     async signExampleTx() {
-      this.deviceLog = [];
+      this.deviceLog = []
 
       // Given a transport (U2F/HID/WebUSB) it is possible instantiate the app
-      const transport = await this.getTransport();
-      const app = new MxwApp(transport);
+      const transport = await this.getTransport()
+      const app = new MxwApp(transport)
 
-      let response = await app.getVersion();
-      this.log(`App Version ${response.major}.${response.minor}.${response.patch}`);
-      this.log(`Device Locked: ${response.device_locked}`);
-      this.log(`Test mode: ${response.test_mode}`);
+      let response = await app.getVersion()
+      this.log(`App Version ${response.major}.${response.minor}.${response.patch}`)
+      this.log(`Device Locked: ${response.device_locked}`)
+      this.log(`Test mode: ${response.test_mode}`)
 
       // now it is possible to access all commands in the app
       const message =
-        '{"account_number":"6571","chain_id":"cosmoshub-2","fee":{"amount":[{"amount":"5000","denom":"uatom"}],"gas":"200000"},"memo":"Delegated with Ledger from union.market","msgs":[{"type":"cosmos-sdk/MsgDelegate","value":{"amount":{"amount":"1000000","denom":"uatom"},"delegator_address":"cosmos102hty0jv2s29lyc4u0tv97z9v298e24t3vwtpl","validator_address":"cosmosvaloper1grgelyng2v6v3t8z87wu3sxgt9m5s03xfytvz7"}}],"sequence":"0"}';
-      response = await app.sign(path, message);
+        '{"account_number":"6571","chain_id":"cosmoshub-2","fee":{"amount":[{"amount":"5000","denom":"uatom"}],"gas":"200000"},"memo":"Delegated with Ledger from union.market","msgs":[{"type":"cosmos-sdk/MsgDelegate","value":{"amount":{"amount":"1000000","denom":"uatom"},"delegator_address":"cosmos102hty0jv2s29lyc4u0tv97z9v298e24t3vwtpl","validator_address":"cosmosvaloper1grgelyng2v6v3t8z87wu3sxgt9m5s03xfytvz7"}}],"sequence":"0"}'
+      response = await app.sign(path, message)
 
-      this.log("Response received!");
-      this.log("Full response:");
-      this.log(response);
+      this.log('Response received!')
+      this.log('Full response:')
+      this.log(response)
     },
   },
-};
+}
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

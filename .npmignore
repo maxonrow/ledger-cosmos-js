@@ -11,3 +11,4 @@ tsconfig.json
 public/
 vue_example/
 .vscode
+node_modules

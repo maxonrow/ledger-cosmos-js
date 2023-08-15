@@ -1,6 +1,12 @@
-# ledger-mxw-js a fork from @zondax/ledger-cosmos-js
+# @zondax/ledger-cosmos-js
 
-This package provides a basic client library to communicate with a Mxw App running in a Ledger Nano S/S+/X devices
+![zondax](docs/zondax_light.png)
+
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+[![Main](https://github.com/cosmos/ledger-cosmos-js/workflows/Main/badge.svg)](https://github.com/cosmos/ledger-cosmos-js/actions?query=workflow%3AMain)
+[![npm version](https://badge.fury.io/js/%40cosmos%2Fledger-cosmos-js.svg)](https://badge.fury.io/js/%40cosmos%2Fledger-cosmos-js)
+
+This package provides a basic client library to communicate with a Tendermint/Cosmos App running in a Ledger Nano S/S+/X devices
 
 We recommend using the npmjs package in order to receive updates/fixes.
 
@@ -30,3 +36,7 @@ It is possible to test this package with a real Ledger Nano device. To accomplis
 yarn install
 yarn test:integration
 ```
+
+# Who we are?
+
+We are Zondax, a company pioneering blockchain services. If you want to know more about us, please visit us at [zondax.ch](https://zondax.ch)
