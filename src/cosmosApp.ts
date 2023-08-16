@@ -77,15 +77,12 @@ export class MxwApp {
 
     const chunks = []
     chunks.push(firstChunk)
-    console.log("buffer", buffer)
     for (let i = 0; i < buffer.length; i += CHUNK_SIZE) {
       let end = i + CHUNK_SIZE
       if (i > buffer.length) {
         end = buffer.length
       }
-      console.log("chunks.push", buffer)
-      console.log("chunks.push", buffer.subarray)
-      chunks.push(buffer.subarray(i, end))
+      chunks.push(Buffer.from(buffer.subarray(i, end)))
     }
 
     return chunks
