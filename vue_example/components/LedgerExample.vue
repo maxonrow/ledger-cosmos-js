@@ -47,7 +47,7 @@
 import TransportWebUSB from '@ledgerhq/hw-transport-webusb'
 // eslint-disable-next-line import/no-extraneous-dependencies
 import TransportU2F from '@ledgerhq/hw-transport-u2f'
-import MxwApp from '../../src'
+import { MxwApp } from '../../src'
 import { ERROR_CODE } from '../../src/common'
 
 const path = [44, 376, 0, 0, 0]
@@ -121,7 +121,7 @@ export default {
 
       // Given a transport (U2F/HIF/WebUSB) it is possible instantiate the app
       const transport = await this.getTransport()
-      const app = new CosmosApp(transport)
+      const app = new MxwApp(transport)
 
       // now it is possible to access all commands in the app
       const response = await app.appInfo()
@@ -218,7 +218,7 @@ export default {
       // now it is possible to access all commands in the app
       const message =
         '{"account_number":"6571","chain_id":"cosmoshub-2","fee":{"amount":[{"amount":"5000","denom":"uatom"}],"gas":"200000"},"memo":"Delegated with Ledger from union.market","msgs":[{"type":"cosmos-sdk/MsgDelegate","value":{"amount":{"amount":"1000000","denom":"uatom"},"delegator_address":"cosmos102hty0jv2s29lyc4u0tv97z9v298e24t3vwtpl","validator_address":"cosmosvaloper1grgelyng2v6v3t8z87wu3sxgt9m5s03xfytvz7"}}],"sequence":"0"}'
-      response = await app.sign(path, message)
+      response = await app.sign(path, Buffer.from(message, 'utf8'))
 
       this.log('Response received!')
       this.log('Full response:')

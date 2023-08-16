@@ -23,7 +23,7 @@ const crypto = require('crypto')
 const bech32 = require('bech32')
 const Ripemd160 = require('ripemd160')
 
-export class CosmosApp {
+export class MxwApp {
   transport: Transport
   versionResponse?: any
 
@@ -73,16 +73,18 @@ export class CosmosApp {
 
   async prepareChunks(path: number[], buffer: Buffer, hrp: string | undefined) {
     const serializedPath = await this.serializePath(path)
-    const firstChunk = hrp === undefined ? serializedPath : Buffer.concat([serializedPath, CosmosApp.serializeHRP(hrp)])
+    const firstChunk = hrp === undefined ? serializedPath : Buffer.concat([serializedPath, MxwApp.serializeHRP(hrp)])
 
     const chunks = []
     chunks.push(firstChunk)
-
+    console.log("buffer", buffer)
     for (let i = 0; i < buffer.length; i += CHUNK_SIZE) {
       let end = i + CHUNK_SIZE
       if (i > buffer.length) {
         end = buffer.length
       }
+      console.log("chunks.push", buffer)
+      console.log("chunks.push", buffer.subarray)
       chunks.push(buffer.subarray(i, end))
     }
 
@@ -202,7 +204,7 @@ export class CosmosApp {
         case 1:
           return publicKeyv1(this, serializedPath)
         case 2: {
-          const data = Buffer.concat([CosmosApp.serializeHRP('cosmos'), serializedPath])
+          const data = Buffer.concat([MxwApp.serializeHRP('cosmos'), serializedPath])
           return publicKeyv2(this, data)
         }
         default:
@@ -219,7 +221,7 @@ export class CosmosApp {
   async getAddressAndPubKey(path: number[], hrp: string, showInDevice = false) {
     return this.serializePath(path)
       .then((serializedPath: Buffer) => {
-        const data = Buffer.concat([CosmosApp.serializeHRP(hrp), serializedPath])
+        const data = Buffer.concat([MxwApp.serializeHRP(hrp), serializedPath])
         return this.transport
           .send(CLA, INS.GET_ADDR_SECP256K1, showInDevice ? P1_VALUES.SHOW_ADDRESS_IN_DEVICE : P1_VALUES.ONLY_RETRIEVE, 0, data, [
             ERROR_CODE.NoError,
