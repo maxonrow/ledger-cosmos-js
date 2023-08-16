@@ -2,7 +2,7 @@
   "name": "ledger-mxw-js",
   "author": "William Khoo",
   "license": "Apache-2.0",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Node API for Mxw App (Ledger Nano S/S+/X)",
   "main": "./dist/index.js",
   "typings": "./dist/index.d.ts",
